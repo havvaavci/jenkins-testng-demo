@@ -1,8 +1,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="Jenkins Demo Suite" verbose="1">
-    <test name="Smoke">
-        <packages>
-            <package name="tests"/>
-        </packages>
+<suite name="Suite">
+    <test name="SmokeTests">
+        <classes>
+            <class name="tests.SmokeTest"/>
+        </classes>
     </test>
 </suite>
+
