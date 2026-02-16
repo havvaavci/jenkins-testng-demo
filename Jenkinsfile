@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  options {
-    timestamps()
-  }
-
   stages {
     stage('Checkout') {
       steps {
@@ -14,7 +10,15 @@ pipeline {
 
     stage('Run Tests') {
       steps {
-        sh 'mvn -q clean test'
+        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+          script {
+            if (isUnix()) {
+              sh 'mvn -q clean test'
+            } else {
+              bat 'mvn -q clean test'
+            }
+          }
+        }
       }
     }
 
@@ -22,12 +26,6 @@ pipeline {
       steps {
         junit 'target/surefire-reports/*.xml'
       }
-    }
-  }
-
-  post {
-    always {
-      archiveArtifacts artifacts: 'target/surefire-reports/**', allowEmptyArchive: true
     }
   }
 }
